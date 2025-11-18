@@ -1,0 +1,20 @@
+# --- Python & Environment ---
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+.DS_Store
+
+# --- Jupyter ---
+.ipynb_checkpoints/
+
+# --- Data & Models ---
+# ignore all contents of inputs/ and models/
+# keep the folder structure (via .gitkeep)
+inputs/*
+!inputs/.gitkeep
+inputs/*.csv
+!inputs/sfdr_data.csv
+models/*
+!models/.gitkeep
