@@ -9,12 +9,16 @@ venv/
 # --- Jupyter ---
 .ipynb_checkpoints/
 
-# --- Data & Models ---
-# ignore all contents of inputs/ and models/
-# keep the folder structure (via .gitkeep)
+# --- Inputs ---
+# Ignore everything, but keep specific source file if needed
 inputs/*
 !inputs/.gitkeep
-inputs/*.csv
 !inputs/sfdr_data.csv
+
+# --- Models & Generated Data ---
+# Ignore heavy files, keep folder structure
 models/*
 !models/.gitkeep
+
+data/*
+!data/.gitkeep
