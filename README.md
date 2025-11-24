@@ -108,6 +108,21 @@ Test whether large language models can perform greenwashing detection through pr
 - Difference: 12 percentage points (96% vs 84%)
 - Error rate comparison: 4x higher (16% vs 4%)
 
+### Model Configuration:
+Model: microsoft/phi-2 (2.7B parameters - 24x larger than FinBERT)
+Approach: Zero-shot prompting (no training)
+Prompt: System instructions with classification criteria
+
+Evaluation: Same 50-sentence test set
+Prompt Design:
+System: "You are an expert in analyzing corporate sustainability reports. 
+Classify statements as SPECIFIC (concrete numbers, dates, targets) 
+or VAGUE (hedging words, no concrete commitments).
+Respond with ONLY: SPECIFIC or VAGUE."
+
+Input: "We reduced emissions by 50% by 2030."
+Expected: "SPECIFIC"
+
 ## SFDR Comparison
 This Notebook compares the Greenwashing Scores (from the previous analysis) to the actual percentage of sustainable assets this asset manager has under management.
 First it uses 2 data points that were researched and found from official sources.
