@@ -118,11 +118,6 @@ Expected: "SPECIFIC"
 - Difference: 12 percentage points (96% vs 84%)
 - Error rate comparison: 4x higher (16% vs 4%)
 
-### Model Configuration:
-Model: microsoft/phi-2 (2.7B parameters - 24x larger than FinBERT)
-Approach: Zero-shot prompting (no training)
-Prompt: System instructions with classification criteria
-
 ## SFDR Comparison
 This Notebook compares the Greenwashing Scores (from the previous analysis) to the actual percentage of sustainable assets this asset manager has under management.
 First it uses 2 data points that were researched and found from official sources.
