@@ -47,16 +47,29 @@ The analysis reveals significant variation in reporting quality across issuers. 
    - `2_Fine_Tuning_RoBERTa.ipynb`: Fine-tunes the classification model.
    - `3_Greenwashing_Analysis.ipynb`: Parses PDFs and calculates final scores.
 
-## Simple Transformer Chatbot
-If you just want to talk to a small Hugging Face model locally, a lightweight console chatbot is included:
+## SFDR Comparison
+This Notebook compares the Greenwashing Scores (from the previous analysis) to the actual percentage of sustainable assets this asset manager has under management. 
+First it uses 2 data points that were researched and found from official sources.
+Then it uses 29 more data points that were researched and estimated by ChatGPT.
 
-1. Install dependencies (first run will download the model unless it is already cached):  
-   `pip install -r requirements.txt`
-2. Start chatting (type `exit` to quit):  
-   `python simple_chatbot.py --model-id microsoft/Phi-3-mini-4k-instruct`
+## RAG Setup
+This Notebooks loads the the text of the 31 PDFs (of the asset managers annual reports) and chunks it into smaller blocks. These Blocks are saved into a Vector Data Structure for easy retreival and comparison. In the next Step you can check specific statements, wether they are supported by text in the PDFs and where. 
 
-Optional flags: `--local-files-only` (stay offline), `--device` (`cpu`, `cuda`, or `mps`), `--temperature` and `--top-p` to control sampling, and `--max-new-tokens` for reply length.
+## simple chatbot & chat rag
+This is an unfinished chatbot integration, where you can chat with the Bot and ask it stuff based on the RAG.
+
+   #### Simple Transformer Chatbot
+   If you just want to talk to a small Hugging Face model locally, a lightweight console chatbot is included:
+
+   1. Install dependencies (first run will download the model unless it is already cached):  
+      `pip install -r requirements.txt`
+   2. Start chatting (type `exit` to quit):  
+      `python simple_chatbot.py --model-id microsoft/Phi-3-mini-4k-instruct`
+
+   Optional flags: `--local-files-only` (stay offline)
 
 ## Authors
 **Maxim Gomez Valverde** (GitHub: @builtbymaxim)
 *Concept, Pipeline Development, Model Fine-Tuning, and Thesis Authorship.*
+**Emanuel Zeder** 
+*SFDR Comparison, RAG, chatbots*
