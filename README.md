@@ -40,6 +40,110 @@ The analysis reveals significant variation in reporting quality across issuers. 
 
 ![Greenwashing Analysis](./outputs/greenwashing_analysis.png)
 
+## Primary Model Performance (DistilRoBERTa)
+### Overview
+We employed a **DistilRoBERTa-base** model fine-tuned on our synthetic dataset to classify claims as "Specific" or "Vague".
+
+### Baseline Performance (Untrained)
+Before training, the pre-trained DistilRoBERTa model essentially performed random guessing, highlighting the necessity of domain-specific fine-tuning.
+- **Accuracy:** 0.5000 (50%)
+- **Precision:** 0.5000
+- **Recall:** 1.0000
+- **F1-Score:** 0.6667
+
+### Fine-Tuned Performance
+After fine-tuning for 3 epochs on the synthetic dataset, the model learned to perfectly distinguish the linguistic patterns of specificity defined in our prompts.
+- **Accuracy:** 1.0000 (100%)
+- **Precision:** 1.0000
+- **Recall:** 1.0000
+- **F1-Score:** 1.0000
+
+*Note on 100% Accuracy:* While typically indicative of overfitting, in this context, it confirms that the model successfully learned the distinct linguistic rules (Specific vs. Vague) encoded in the synthetic generation process.
+
+## Model Comparison & Evaluation (Benchmarking)
+### Overview
+This stage evaluates and compares different model architectures to identify the most effective approach for greenwashing detection.
+
+### FinBERT Fine-Tuning & Comparison
+Test whether a domain-specific model (FinBERT, pre-trained on financial texts) outperforms the generic RoBERTa baseline.
+
+#### Results:
+**Baseline Performance (Untrained FinBERT):**
+- Accuracy:  0.5400 (54%)
+- Precision: 0.5312
+- Recall:    0.5400
+- F1-Score:  0.5289
+*Conclusion: Pre-training alone is insufficient.*
+
+**Fine-Tuned FinBERT:**
+- Accuracy:  0.9600 (96%)
+- Precision: 0.9615
+- Recall:    0.9600
+- F1-Score:  0.9604
+
+**Key Achievement:**
+- 42 percentage point improvement through fine-tuning (54% → 96%)
+- 4% error rate on evaluation set (2 misclassifications out of 50)
+
+## Zero-Shot LLM Evaluation
+
+**Objective:**
+Test whether large language models can perform greenwashing detection through prompting alone, without any task-specific training. This evaluates if model scale and general capabilities can substitute for fine-tuning.
+
+### Model Configuration:
+- **Model:** microsoft/phi-2 (2.7B parameters - 24x larger than FinBERT)
+- **Approach:** Zero-shot prompting (no training)
+- **Prompt:** System instructions with classification criteria
+
+Evaluation: Same 50-sentence test set
+Prompt Design:
+System: "You are an expert in analyzing corporate sustainability reports. 
+Classify statements as SPECIFIC (concrete numbers, dates, targets) 
+or VAGUE (hedging words, no concrete commitments).
+Respond with ONLY: SPECIFIC or VAGUE."
+
+Input: "We reduced emissions by 50% by 2030."
+Expected: "SPECIFIC"
+
+### Results:
+**Zero-Shot LLM Performance:**
+- Accuracy:  0.8400 (84%)
+- Precision: 0.8404
+- Recall:    0.8400
+- F1-Score:  0.8398
+
+**Performance Gap:**
+- Fine-tuned FinBERT: 96% accuracy
+- Zero-shot Phi-2: 84% accuracy
+- Difference: 12 percentage points (96% vs 84%)
+- Error rate comparison: 4x higher (16% vs 4%)
+
+## SFDR Comparison
+This Notebook compares the Greenwashing Scores (from the previous analysis) to the actual percentage of sustainable assets this asset manager has under management.
+First it uses 2 data points that were researched and found from official sources.
+Then it uses 29 more data points that were researched and estimated by ChatGPT.
+
+![Real SFDR](./outputs/SFDR_Real.png)
+![Synthetic SFDR](./outputs/SFDR_synthetic.png)
+
+## RAG Setup
+This Notebook loads the the text of the 31 PDFs (of the asset managers annual reports) and chunks it into smaller blocks. These Blocks are saved into a Vector Data Structure for easy retrieval and comparison. In the next Step you can check specific statements, whether they are supported by text in the PDFs and where.
+
+![RAG Output](./outputs/RAG_output.png)
+
+## Chat RAG
+This is an unfinished chat integration, where you can chat with the Bot and ask it stuff based on the RAG and it will show you where there is evidence for it in the files.
+
+#### Simple Transformer Chatbot
+If you just want to talk to a small Hugging Face model locally, a lightweight console chatbot is included:
+
+1. Install dependencies (first run will download the model unless it is already cached):
+   `pip install -r requirements.txt`
+2. Start chatting (type `exit` to quit):
+   `python simple_chatbot.py --model-id microsoft/Phi-3-mini-4k-instruct`
+
+-> next step: connecting the chatbot with the RAG Chat
+
 ## Usage
 1. Install requirements: `pip install -r requirements.txt`
 2. Navigate to `notebooks/` and run the files in order:
@@ -47,16 +151,12 @@ The analysis reveals significant variation in reporting quality across issuers. 
    - `2_Fine_Tuning_RoBERTa.ipynb`: Fine-tunes the classification model.
    - `3_Greenwashing_Analysis.ipynb`: Parses PDFs and calculates final scores.
 
-## Simple Transformer Chatbot
-If you just want to talk to a small Hugging Face model locally, a lightweight console chatbot is included:
-
-1. Install dependencies (first run will download the model unless it is already cached):  
-   `pip install -r requirements.txt`
-2. Start chatting (type `exit` to quit):  
-   `python simple_chatbot.py --model-id microsoft/Phi-3-mini-4k-instruct`
-
-Optional flags: `--local-files-only` (stay offline), `--device` (`cpu`, `cuda`, or `mps`), `--temperature` and `--top-p` to control sampling, and `--max-new-tokens` for reply length.
-
 ## Authors
 **Maxim Gomez Valverde** (GitHub: @builtbymaxim)
-*Concept, Pipeline Development, Model Fine-Tuning, and Thesis Authorship.*
+*Concept, Pipeline Development, Model Fine-Tuning (RoBERTa), Scoring Analysis, and Thesis Authorship.*
+
+**Emanuel Zeder**
+*SFDR Comparison, RAG Setup, Chatbot Integration.*
+
+**Elias Gatterer**
+*Model Comparison & Evaluation (FinBERT fine-tuning, Zero-Shot LLM testing, Comparative Analysis).*
