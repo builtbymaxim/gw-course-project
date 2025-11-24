@@ -123,11 +123,16 @@ This Notebook compares the Greenwashing Scores (from the previous analysis) to t
 First it uses 2 data points that were researched and found from official sources.
 Then it uses 29 more data points that were researched and estimated by ChatGPT.
 
+![Real SFDR](./outputs/SFDR_Real.png)
+![Synthetic SFDR](./outputs/SFDR_synthetic.png)
+
 ## RAG Setup
 This Notebook loads the the text of the 31 PDFs (of the asset managers annual reports) and chunks it into smaller blocks. These Blocks are saved into a Vector Data Structure for easy retrieval and comparison. In the next Step you can check specific statements, whether they are supported by text in the PDFs and where.
 
-## Simple Chatbot & Chat RAG
-This is an unfinished chatbot integration, where you can chat with the Bot and ask it stuff based on the RAG.
+![RAG Output](./outputs/RAG_output.png)
+
+## Chat RAG
+This is an unfinished chat integration, where you can chat with the Bot and ask it stuff based on the RAG and it will show you where there is evidence for it in the files.
 
 #### Simple Transformer Chatbot
 If you just want to talk to a small Hugging Face model locally, a lightweight console chatbot is included:
@@ -137,7 +142,7 @@ If you just want to talk to a small Hugging Face model locally, a lightweight co
 2. Start chatting (type `exit` to quit):
    `python simple_chatbot.py --model-id microsoft/Phi-3-mini-4k-instruct`
 
-Optional flags: `--local-files-only` (stay offline)
+-> next step: connecting the chatbot with the RAG Chat
 
 ## Usage
 1. Install requirements: `pip install -r requirements.txt`
