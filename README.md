@@ -48,7 +48,7 @@ We employed a **DistilRoBERTa-base** model fine-tuned on our synthetic dataset t
 Before training, the pre-trained DistilRoBERTa model essentially performed random guessing, highlighting the necessity of domain-specific fine-tuning.
 - **Accuracy:** 0.5000 (50%)
 - **Precision:** 0.5000
-- **Recall:** 1.0000 (Model predicted only one class)
+- **Recall:** 1.0000
 - **F1-Score:** 0.6667
 
 ### Fine-Tuned Performance
